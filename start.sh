@@ -34,14 +34,12 @@ function rc_init {
     touch $RC_DATA/cache/MANIFEST
 }
 
-# Return codes:
-#  - 0 instance-id updated to version
-#  - 1 instance-id not installed
-function rc_upgrade {
+# Provisions, i.e. installs or updates, the RhodeCode app in the specified version
+function rc_provision {
     currentVersion=`rccontrol status $RC_INSTANCEID | sed -rn 's/^ - VERSION: (.+) '$RC_APP'$/\1/p'`
     if [[ "x$currentVersion" -eq "x" ]]
     then
-        return 1
+        rccontrol install $RC_COMMON_OPTS $RC_APP --version $RC_VERSION --accept-license --start-at-boot false $RC_INSTALL_OPTS
     elif [[ "$currentVersion" -ne "$RC_VERSION" ]]
     then
         echo "Upgrading RhodeCode $RC_APP from $currentVersion to $RC_VERSION"
@@ -49,18 +47,13 @@ function rc_upgrade {
     fi
 }
 
-function rc_install {
-    echo "Installing RhodeCode $RC_APP $RC_VERSION"
-    rccontrol install $RC_COMMON_OPTS $RC_APP --version $RC_VERSION --accept-license --start-at-boot false $RC_INSTALL_OPTS
-}
-
 
 # Initialise variables and RhodeCode Control
 rc_init
 
 # Provision the RhodeCode app
-rc_upgrade || rc_install
+rc_provision
 
 # Start the RhodeCode app
 rccontrol start $RC_INSTANCEID
-tail -fn 0 $RC_DATA/$RC_APP/${RC_APP,,}.log
+tail -fn 0 $RC_DATA/$RC_INSTANCEID/${RC_APP,,}.log
