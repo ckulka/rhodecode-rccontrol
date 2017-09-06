@@ -2,8 +2,6 @@ FROM centos:7
 LABEL maintainer="cyrill.kulka@gmail.com"
 
 ENV RC_DATA		"/data"
-ENV RC_APP		"undefined"
-ENV RC_VERSION	"4.9.0"
 ENV RC_USER		"admin"
 ENV RC_PASSWORD	"adalovelace"
 ENV RC_DB		"sqlite"
