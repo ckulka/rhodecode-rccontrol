@@ -18,3 +18,5 @@ RUN curl -so $RC_INSTALLER https://dls-eu.rhodecode.com/dls/NzA2MjdhN2E2ODYxNzY2
 	&& chmod 755 $RC_INSTALLER								\
 	&& ./$RC_INSTALLER --accept-license						\
 	&& rm $RC_INSTALLER
+
+COPY start.sh .
