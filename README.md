@@ -1,10 +1,14 @@
 # RhodeCode Control
 
-Dockerfile for RhodeCode Control, ready-to-go for VCS Server, RhodeCode CE and EE.
+[![](https://images.microbadger.com/badges/version/ckulka/rhodecode-rccontrol.svg)](https://github.com/ckulka/rhodecode-rccontrol "Get your own version badge on microbadger.com")
 
-```bash
-docker run -it ckulka/rhodecode-rccontrol
-```
+Dockerfile for [RhodeCode Control](https://docs.rhodecode.com/RhodeCode-Control/), ready-to-go for VCS Server, [RhodeCode Community Edition](https://rhodecode.com/open-source) and [RhodeCode Enterprise Edition](https://docs.rhodecode.com/RhodeCode-Enterprise/).
+
+## Supported Tags
+
+I follow the same naming scheme for the images as [RhodeCode](https://docs.rhodecode.com/RhodeCode-Control/release-notes/release-notes.html) themselves
+
+- [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master) (corresponds to 1.14.0)
 
 ## Complete Stack
 
