@@ -41,7 +41,7 @@ function rc_provision {
 		rccontrol upgrade $RC_INSTANCEID --version $RC_VERSION
 	fi
 	rccontrol self-stop
-	echo "$RC_CONFIG" | python crudini --merge $HOME/.rccontrol/$RC_INSTANCEID/$RC_INSTANCEINI
+	echo "$RC_CONFIG" | crudini --merge $HOME/.rccontrol/$RC_INSTANCEID/$RC_INSTANCEINI
 }
 
 # Initialise variables and RhodeCode Control
