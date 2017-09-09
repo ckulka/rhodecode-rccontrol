@@ -4,6 +4,8 @@
 
 Dockerfile for [RhodeCode Control](https://docs.rhodecode.com/RhodeCode-Control/), ready-to-go for VCS Server, [RhodeCode Community Edition](https://rhodecode.com/open-source) and [RhodeCode Enterprise Edition](https://docs.rhodecode.com/RhodeCode-Enterprise/).
 
+For more details, see <https://github.com/ckulka/rhodecode-rccontrol>.
+
 ## Supported Tags
 
 I follow the same naming scheme for the images as [RhodeCode](https://docs.rhodecode.com/RhodeCode-Control/release-notes/release-notes.html) themselves
