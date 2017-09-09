@@ -1,16 +1,3 @@
-# RhodeCode Control
-
-Dockerfile for RhodeCode Control, ready-to-go for VCS Server, RhodeCode CE and EE.
-
-```bash
-docker run -it ckulka/rhodecode-rccontrol
-```
-
-## Complete Stack
-
-The following `docker-compose.yaml` file spins up a complete RhodeCode stack
-
-```yaml
 version: "3"
 
 services:
@@ -34,4 +21,6 @@ services:
         vcs.server = vcsserver:9900
     ports:
       - "5000:5000"
-```
+    links:
+      - db
+      - vcsserver
