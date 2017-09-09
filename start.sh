@@ -7,15 +7,15 @@ function rc_init {
 	case "$RC_APP" in
 		VCSServer)
 			RC_INSTANCEINI="vcsserver.ini"
-			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 8080}'
+			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 9900}'
 			;;
 		Community)
 			RC_INSTANCEINI="rhodecode.ini"
-			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 8080, "username": "'$RC_USER'", "password": "'$RC_PASSWORD'", "email": "'$RC_EMAIL'", "repo_dir": "/data", "database": "'$RC_DB'"}'
+			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 5000, "username": "'$RC_USER'", "password": "'$RC_PASSWORD'", "email": "'$RC_EMAIL'", "repo_dir": "/data", "database": "'$RC_DB'"}'
 			;;
 		Enterprise)
 			RC_INSTANCEINI="rhodecode.ini"
-			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 8080, "username": "'$RC_USER'", "password": "'$RC_PASSWORD'", "email": "'$RC_EMAIL'", "repo_dir": "/data", "database": "'$RC_DB'"}'
+			RC_INSTALL_OPTS='{"host": "0.0.0.0", "port": 5000, "username": "'$RC_USER'", "password": "'$RC_PASSWORD'", "email": "'$RC_EMAIL'", "repo_dir": "/data", "database": "'$RC_DB'"}'
 			;;
 		*)
 			>&2 echo "Please set the RC_APP to either VCSServer, Enterprise or Community"
@@ -41,8 +41,8 @@ function rc_provision {
 		rccontrol upgrade $RC_INSTANCEID --version $RC_VERSION
 	fi
 	rccontrol self-stop
+	echo "$RC_CONFIG" | python crudini --merge $HOME/.rccontrol/$RC_INSTANCEID/$RC_INSTANCEINI
 }
-
 
 # Initialise variables and RhodeCode Control
 rc_init
