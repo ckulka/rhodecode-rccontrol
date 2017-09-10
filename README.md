@@ -1,6 +1,6 @@
 # RhodeCode Control
 
-[![](https://images.microbadger.com/badges/version/ckulka/rhodecode-rccontrol.svg)](https://github.com/ckulka/rhodecode-rccontrol "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/ckulka/rhodecode-rccontrol:1.14.0.svg)](https://github.com/ckulka/rhodecode-rccontrol/tree/1.14.0 "Get your own version badge on microbadger.com")
 
 Dockerfile for [RhodeCode Control](https://docs.rhodecode.com/RhodeCode-Control/), ready-to-go for VCS Server, [RhodeCode Community Edition](https://rhodecode.com/open-source) and [RhodeCode Enterprise Edition](https://docs.rhodecode.com/RhodeCode-Enterprise/).
 
@@ -10,7 +10,8 @@ For more details, see <https://github.com/ckulka/rhodecode-rccontrol>.
 
 I follow the same naming scheme for the images as [RhodeCode](https://docs.rhodecode.com/RhodeCode-Control/release-notes/release-notes.html) themselves
 
-- [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master) (corresponds to 1.14.0)
+- [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master)
+- [1.14.0](https://github.com/ckulka/rhodecode-rccontrol/tree/1.14.0)
 
 ## Usage
 
@@ -42,7 +43,7 @@ services:
       - vcsserver
 ```
 
-See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/master/example/docker-compose.yaml) for a complete example including volumes for persistence.
+See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/1.14.0/example/docker-compose.yaml) for a complete example including volumes for persistence.
 
 ```bash
 # Launch the database (see docker-compose.yaml below)
