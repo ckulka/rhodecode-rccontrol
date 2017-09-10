@@ -5,10 +5,12 @@ ENV RC_INSTALLER    RhodeCode-installer-linux-build20170813_2100
 ENV RC_CHECKSUM     75ee77b0abbf59582b9060d381c5f80b60fd9d3e7f5040b9685617cb7296d2db
 
 # Create the RhodeCode user
-RUN useradd rhodecode -u 1000 -s /sbin/nologin				\
-	&& mkdir -m 0755 -p /opt/rhodecode /data				\
-	&& chown rhodecode:rhodecode /opt/rhodecode /data		\
-	&& yum install -y bzip2
+RUN useradd rhodecode -u 1000 -s /sbin/nologin			\
+	&& mkdir -m 0755 -p /opt/rhodecode /data			\
+	&& chown rhodecode:rhodecode /opt/rhodecode /data	\
+	&& yum install -y bzip2								\
+	&& curl -so /usr/local/bin/crudini https://raw.githubusercontent.com/pixelb/crudini/0.9/crudini \
+	&& chmod +x /usr/local/bin/crudini
 
 USER rhodecode
 WORKDIR /home/rhodecode
@@ -21,10 +23,4 @@ RUN curl -so $RC_INSTALLER https://dls-eu.rhodecode.com/dls/NzA2MjdhN2E2ODYxNzY2
 	&& rm $RC_INSTALLER
 
 # Add additional tools
-USER root
-RUN curl -so /usr/local/bin/crudini https://raw.githubusercontent.com/pixelb/crudini/0.9/crudini \
-	&& chmod +x /usr/local/bin/crudini
-COPY start.sh /usr/local/bin/rc_start
-USER rhodecode
-
-VOLUME /data
+COPY files .
