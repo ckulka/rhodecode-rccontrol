@@ -42,7 +42,7 @@ services:
       - vcsserver
 ```
 
-See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/master/exmaple/docker-compose.yaml) for a complete example including volumes for persistence.
+See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/master/example/docker-compose.yaml) for a complete example including volumes for persistence.
 
 ```bash
 # Launch the database (see docker-compose.yaml below)
