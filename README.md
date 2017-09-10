@@ -46,14 +46,11 @@ services:
 See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/master/example/docker-compose.yaml) for a complete example including volumes for persistence.
 
 ```bash
-# Launch the database (see docker-compose.yaml below)
-docker-compose up -d db
-
-# Run the installer for RhodeCode
+# Run the installer for RhodeCode to initialise the database
 docker-compose run --rm rhodecode ./install.sh
 
 # Alternatively, if you haven't defined RC_DB
-docker-compose run --rm rhodecode ./install <database>
+docker-compose run --rm rhodecode ./install.sh <database>
 
 # Spin up the VCS Server and RhodeCode after the installation
 docker-compose up -d
