@@ -11,113 +11,78 @@ For more details, see <https://github.com/ckulka/rhodecode-rccontrol>.
 I follow the same naming scheme for the images as [RhodeCode](https://docs.rhodecode.com/RhodeCode-Control/release-notes/release-notes.html) themselves
 
 - [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master) (corresponds to 1.14.0)
-- [1.14.0](https://github.com/ckulka/rhodecode-rccontrol/tree/1.14.0)
 
+## Usage
 
-## Complete Stack
+The following steps are required to spin up a complete RhodeCode stack
 
-The following `docker-compose.yaml` file spins up a complete RhodeCode stack
+1. Initialise the database
+1. Spin up the VCS Server and RhodeCode CE/EE
 
 ```yaml
 version: "3"
 
 services:
-  vcsserver:
-    image: ckulka/rhodecode-vcsserver
-    volumes:
-      - repos:/data
-
   db:
     image: postgres:alpine
     environment:
       POSTGRES_PASSWORD: cookiemonster
-    volumes:
-      - db:/var/lib/postgresql/data
+
+  vcsserver:
+    image: ckulka/rhodecode-vcsserver
 
   rhodecode:
     image: ckulka/rhodecode-ce
     environment:
-      RC_USER: admin
-      RC_PASSWORD: ilovecookies
-      RC_EMAIL: adalovelace@example.com
       RC_DB: postgresql://postgres:cookiemonster@db
-      RC_CONFIG: |
-        [app:main]
-        vcs.server = vcsserver:9900
     ports:
       - "5000:5000"
-    volumes:
-      - repos:/data
+    links:
+      - db
+      - vcsserver
+```
 
-volumes:
-  repos:
-  db:
+See [example/docker-compose.yaml](https://github.com/ckulka/rhodecode-rccontrol/blob/master/exmaple/docker-compose.yaml) for a complete example including volumes for persistence.
+
+```bash
+# Launch the database (see docker-compose.yaml below)
+docker-compose up -d db
+
+# Run the installer for RhodeCode
+docker-compose run --rm rhodecode ./install.sh
+
+# Alternatively, if you haven't defined RC_DB
+docker-compose run --rm rhodecode ./install <database>
+
+# Spin up the VCS Server and RhodeCode after the installation
+docker-compose up -d
 ```
 
 You can now open <http://localhost:5000> and sign in using the `admin` username and the password `ilovecookies`.
 
 ## Environment Variables
 
-### RC_APP
+### RC_DB
 
-The `RC_APP` variable controls which application to install. Must be one of `VCSServer`, `Community` and `Enterprise`.
-
-### RC_VERSION
-
-The `RC_VERSION` variable controls the desired version of the application. If the correct version is not installed, then RhodeCode Control is used to either upgrade the existing version.
-
-For a list of available version, see RhodeCode's [Release Notes](https://docs.rhodecode.com/RhodeCode-Enterprise/release-notes/release-notes.html).
-
-## RC_USER
-
-The `RC_USER` variable specifies the admin username used during the installation, i.e. when a new container is started.
-
-This variable is only required for the RhodeCode CE and EE.
-
-## RC_PASSWORD
-
-The `RC_PASSWORD` variable specifies the admin username password during the installation, i.e. when a new container is started.
-
-This variable is only required for the RhodeCode CE and EE.
-
-## RC_EMAIL
-
-The `RC_EMAIL` variable specifies the admin email address during the installation, i.e. when a new container is started.
-
-This variable is only required for the RhodeCode CE and EE.
-
-## RC_DB
-
-The `RC_DB` variable specifies the admin email address during the installation, i.e. when a new container is started.
+The `RC_DB` variable specifies the database RhodeCode connects to.
+It's only there for convenience over `RC_CONFIG` and takes precendence over `sqlalchemy.db1.url` in `RC_CONFIG`.
 
 For more details on supported databases, see [Supported Databases](https://docs.rhodecode.com/RhodeCode-Enterprise/install/install-database.html).
 
-This variable is only required for the RhodeCode CE and EE.
+This variable is only used in the RhodeCode CE and EE.
 
-## RC_CONFIG
+### RC_CONFIG
 
-The `RC_CONFIG` variable updates the VCS Server or Rhodecode CE/EE configuration before it is being started. It can override variables that were intially set during installation, e.g. the database.
+The `RC_CONFIG` variable updates the VCS Server or Rhodecode CE/EE configuration, adding/updating settings that were set or not available during installation.
 
-The example below spins up a complete RhodeCode stack and then sets up the email configuration.
+If `RC_CONF` is not set, the contents of [files/rhodecode.override.ini](https://github.com/ckulka/rhodecode-rccontrol/blob/master/files/rhodecode.override.ini) is used by default.
+
+The example below additionally sets up the email configuration.
 
 ```yaml
-version: "3"
-
-services:
-  vcsserver:
-    image: ckulka/rhodecode-vcsserver
-
-  db:
-    image: postgres:alpine
-    environment:
-      POSTGRES_PASSWORD: cookiemonster
-
   rhodecode:
     image: ckulka/rhodecode-ce
     environment:
-      RC_USER: admin
-      RC_PASSWORD: ilovecookies
-      RC_EMAIL: adalovelace@example.com
       RC_DB: postgresql://postgres:cookiemonster@db
       RC_CONFIG: |
         [DEFAULT]
@@ -128,26 +93,28 @@ services:
         smtp_use_ssl = true
 
         [app:main]
+        vcs.server.enable = true
         vcs.server = vcsserver:9900
-    ports:
-      - "5000:5000"
 ```
 
-For more details, see [Post Installation Tasks](https://docs.rhodecode.com/RhodeCode-Enterprise/install/install-steps.html).
+For more details on the configuration, see [Post Installation Tasks](https://docs.rhodecode.com/RhodeCode-Enterprise/install/install-steps.html).
 
 ## Persistence
 
 RhodeCode is configured to use `/data` as the location for the respositories.
 
+Only the VCS Server needs to have access to the repository files, as depicted in the [System Overview](https://docs.rhodecode.com/RhodeCode-Enterprise/admin/system-overview.html).
+
 For more details on how to back up the repositories, see [Repository Backup](https://docs.rhodecode.com/RhodeCode-Enterprise/admin/backup-restore.html#repository-backup).
 
 ## Migrating existing installations
+
+**WIP:** While it sounds like it makes sense, I still have to test it.
 
 Migrating an existing installation of RhodeCode to Docker is essentially described in [Backup and Restore: Restoration Steps](https://docs.rhodecode.com/RhodeCode-Enterprise/admin/backup-restore.html#restoration-steps)
 
 1. Spin up a new instance
     - Mount your existing repositories
-    - Use `RC_DB=sqlite`
     - Use `RC_CONFIG` to import your existing configuration
 1. [Remap and rescan](https://docs.rhodecode.com/RhodeCode-Enterprise/admin/admin-tricks.html#remap-rescan) your repositories
 1. Perform any necessary [Post Restoration Steps](https://docs.rhodecode.com/RhodeCode-Enterprise/admin/backup-restore.html#post-restoration-steps)
@@ -164,16 +131,12 @@ services:
   rhodecode:
     image: ckulka/rhodecode-ce
     environment:
-      RC_USER: admin
-      RC_PASSWORD: ilovecookies
-      RC_EMAIL: adalovelace@example.com
-      RC_DB: postgresql://postgres:cookiemonster@db
       RC_CONFIG: |
         [app:main]
+        vcs.server.enable = true
         vcs.server = vcsserver:9900
         sqlalchemy.db1.url = postgresql://rhodecode:secret@mydbserver/rhodecode
+        # ...
     ports:
       - "5000:5000"
-    volumes:
-      - /mnt/repositories:/data
 ```
