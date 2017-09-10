@@ -76,7 +76,7 @@ This variable is only used in the RhodeCode CE and EE.
 
 The `RC_CONFIG` variable updates the VCS Server or Rhodecode CE/EE configuration, adding/updating settings that were set or not available during installation.
 
-If `RC_CONF` is not set, the contents of [files/rhodecode.override.ini](https://github.com/ckulka/rhodecode-rccontrol/blob/master/files/rhodecode.override.ini) is used by default.
+If `RC_CONF` is not set, the contents of [files/rhodecode.override.ini](https://github.com/ckulka/rhodecode-rccontrol/blob/1.14.0/files/rhodecode.override.ini) is used by default.
 
 The example below additionally sets up the email configuration.
 
