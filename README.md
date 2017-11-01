@@ -10,7 +10,8 @@ For more details, see <https://github.com/ckulka/rhodecode-rccontrol>.
 
 I follow the same naming scheme for the images as [RhodeCode](https://docs.rhodecode.com/RhodeCode-Control/release-notes/release-notes.html) themselves
 
-- [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master) (corresponds to 1.14.0)
+- [latest](https://github.com/ckulka/rhodecode-rccontrol/tree/master) (corresponds to 1.15.0)
+- [1.15.0](https://github.com/ckulka/rhodecode-rccontrol/tree/1.15.0)
 - [1.14.0](https://github.com/ckulka/rhodecode-rccontrol/tree/1.14.0)
 
 ## Usage
