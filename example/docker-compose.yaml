@@ -22,6 +22,8 @@ services:
     links:
       - db
       - vcsserver
+    volumes:
+      - repos:/data
 
 volumes:
   repos:
